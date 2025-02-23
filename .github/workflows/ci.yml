@@ -22,8 +22,20 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
           
-      - name: Upgrade Gradle Wrapper (if needed)
-        run: ./gradlew wrapper --gradle-version 8.7 --distribution-type all
+      - name: Remove Old Gradle Wrapper
+        run: rm -rf .gradle/ gradle/ && rm -f gradlew gradlew.bat
+
+      - name: Install Latest Gradle
+        run: |
+          wget https://services.gradle.org/distributions/gradle-8.7-bin.zip
+          sudo mkdir /opt/gradle
+          sudo unzip -d /opt/gradle gradle-8.7-bin.zip
+          echo "export PATH=/opt/gradle/gradle-8.7/bin:\$PATH" >> ~/.bashrc
+          source ~/.bashrc
+          gradle --version
+
+      - name: Reinitialize Gradle Wrapper
+        run: gradle wrapper --gradle-version 8.7 --distribution-type all
 
       - name: List directory contents for debugging
         run: ls -la
