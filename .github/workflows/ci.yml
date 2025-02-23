@@ -21,6 +21,9 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
+          
+      - name: Upgrade Gradle Wrapper (if needed)
+        run: ./gradlew wrapper --gradle-version 8.7 --distribution-type all
 
       - name: List directory contents for debugging
         run: ls -la
